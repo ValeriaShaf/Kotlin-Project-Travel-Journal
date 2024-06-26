@@ -1,14 +1,27 @@
 [versions]
-agp = "8.3.1"
-kotlin = "1.9.0"
+agp = "8.3.2"
+kotlin = "2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.8.0"
+activity = "1.9.0"
 constraintlayout = "2.1.4"
+nav_version = "2.7.7"  #navigation
+activity_version = "1.9.0"
+
+
+ksp = "2.0.0-1.0.21"
+kotlinPlugin = "2.0.0"
+lifecycleKtx = "2.8.2"              #lifecycle
+room_version = "2.6.1"              #Room
+glide="4.16.0"
+dagger = "2.51.1"
+kotlinxCoroutinesAndroid = "1.9.0-RC"  #coroutines
+play-services-location="21.3.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -19,8 +32,43 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav_version" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav_version" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity_version" }
+
+#navigation
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "nav_version" }
+#Room
+androidx-room-runtime ={group = "androidx.room", name = "room-runtime", version.ref = "room_version" }
+androidx-room-ktx ={group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
+androidx-room-compiler ={group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
+#coroutines
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroid" }
+#lifecycle
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleKtx" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleKtx" }
+#junit
+#junit = { group = "junit", name = "junit", version.ref = "junit" }
+#androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+#material
+#material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+#glide
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+#Google play services location
+gms-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
+
+
+#Dagger
+com-google-dagger ={group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"  }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp",  version.ref = "ksp"  }
 
