@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddItemFragment"
+    tools:context=".EditItemFragment"
     android:padding="16dp"
     android:windowSoftInputMode="adjustResize"
     >
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Add Travel Point"
+    android:text="Edit Travel Point"
     android:gravity="center"
     android:textSize="20sp"/>
     <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +51,6 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
             android:hint="dd/mm/yyyy"
             android:id="@+id/enter_date"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -77,7 +76,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="enter item description"
+            android:hint="enter item Description"
             android:id="@+id/enter_item_description"/>
     </com.google.android.material.textfield.TextInputLayout>
 <LinearLayout
@@ -108,7 +107,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
+        android:text="Finish"
         android:id="@+id/finish_btn"
         android:layout_gravity="center"
         android:backgroundTint="@color/darkBlue"

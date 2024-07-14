@@ -1,15 +1,21 @@
 package com.example.kotlinfinalproject
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.example.kotlinfinalproject.databinding.ActivityMainBinding
+import com.google.android.material.textfield.TextInputEditText
 
 class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,5 +27,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
+//        val toolbar=findViewById<Toolbar>(R.id.toolbar)
+//        setSupportActionBar(toolbar)
     }
 }

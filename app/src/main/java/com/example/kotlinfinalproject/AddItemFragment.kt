@@ -22,7 +22,7 @@ class AddItemFragment: Fragment() {
     private var imageUri: Uri?=null
     val pickImageLauncher: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.OpenDocument()){
-        binding.resultImage.setImageURI(it)
+        binding.imageBtn.setImageURI(it)
             if (it != null) {
                 requireActivity().contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
