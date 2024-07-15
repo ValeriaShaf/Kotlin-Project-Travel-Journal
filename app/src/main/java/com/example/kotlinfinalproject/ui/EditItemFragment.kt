@@ -1,4 +1,4 @@
-package com.example.kotlinfinalproject
+package com.example.kotlinfinalproject.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.kotlinfinalproject.data.model.Item
+import com.example.kotlinfinalproject.data.model.ItemManager
+import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.databinding.EditItemLayoutBinding
 
 class EditItemFragment : Fragment() {

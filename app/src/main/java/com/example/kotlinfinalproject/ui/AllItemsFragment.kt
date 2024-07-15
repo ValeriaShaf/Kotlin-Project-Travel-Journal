@@ -1,4 +1,4 @@
-package com.example.kotlinfinalproject
+package com.example.kotlinfinalproject.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+import com.example.kotlinfinalproject.data.model.ItemManager
+import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.databinding.AllItemsLayoutBinding
 
 class AllItemsFragment: Fragment() {
@@ -27,7 +28,7 @@ class AllItemsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding=AllItemsLayoutBinding.inflate(inflater,container,false)
+        _binding= AllItemsLayoutBinding.inflate(inflater, container, false)
         binding.addItemBtn.setOnClickListener{
             findNavController().navigate(R.id.action_allItemsFragment_to_addItemFragment)
         }
@@ -41,13 +42,16 @@ class AllItemsFragment: Fragment() {
         setupRecyclerView()
 
 
-        binding.recycler.layoutManager=LinearLayoutManager(requireContext())
+        binding.recycler.layoutManager= LinearLayoutManager(requireContext())
 
-        ItemTouchHelper(object : ItemTouchHelper.Callback(){
+        ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
-            )= makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+            ) = makeFlag(
+                ItemTouchHelper.ACTION_STATE_SWIPE,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            )
 
 
             override fun onMove(

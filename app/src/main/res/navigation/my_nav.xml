@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/allItemsFragment"
-        android:name="com.example.kotlinfinalproject.AllItemsFragment"
+        android:name="com.example.kotlinfinalproject.ui.AllItemsFragment"
         android:label="all_items_layout"
         tools:layout="@layout/all_items_layout" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/addItemFragment"
-        android:name="com.example.kotlinfinalproject.AddItemFragment"
+        android:name="com.example.kotlinfinalproject.ui.AddItemFragment"
         android:label="add_item_layout"
         tools:layout="@layout/add_item_layout" >
         <action
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailItemFragment"
-        android:name="com.example.kotlinfinalproject.DetailItemFragment"
+        android:name="com.example.kotlinfinalproject.ui.DetailItemFragment"
         android:label="detail_item_layout"
         tools:layout="@layout/detail_item_layout" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/editItemFragment"
-        android:name="com.example.kotlinfinalproject.EditItemFragment"
+        android:name="com.example.kotlinfinalproject.ui.EditItemFragment"
         android:label="edit_item_layout"
         tools:layout="@layout/edit_item_layout" >
         <action

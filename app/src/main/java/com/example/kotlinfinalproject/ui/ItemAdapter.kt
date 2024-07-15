@@ -1,10 +1,11 @@
-package com.example.kotlinfinalproject
+package com.example.kotlinfinalproject.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.ItemLayoutBinding
 
 class ItemAdapter(private val items: List<Item>, private val listener: ItemListener) :

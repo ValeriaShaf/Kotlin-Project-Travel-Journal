@@ -1,17 +1,12 @@
-package com.example.kotlinfinalproject
+package com.example.kotlinfinalproject.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.findNavController
-import com.example.kotlinfinalproject.databinding.ActivityMainBinding
-import com.google.android.material.textfield.TextInputEditText
+import com.example.kotlinfinalproject.R
 
 class MainActivity : AppCompatActivity() {
 

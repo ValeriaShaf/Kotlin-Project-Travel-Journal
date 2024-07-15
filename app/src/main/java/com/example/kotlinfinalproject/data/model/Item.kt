@@ -1,11 +1,22 @@
-package com.example.kotlinfinalproject
+package com.example.kotlinfinalproject.data.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 @Parcelize
-data class Item( val title:String, val description:String, val photo: String?,val id: String = UUID.randomUUID().toString()):Parcelable
+@Entity(tableName = "items")
+data class Item(
+    @ColumnInfo(name="title")
+    val title:String,
+    @ColumnInfo(name="description")
+    val description:String,
+    @ColumnInfo(name="image")
+    val photo: String?,
+
+    val id: String = UUID.randomUUID().toString()):Parcelable
 
 object ItemManager{
     val items: MutableList<Item> = mutableListOf()
@@ -15,17 +26,7 @@ object ItemManager{
 
 
     }
-//    fun edit(id: String, newItem: Item) {
-//
-//
-//        val existingItem = items.find { it.id == id }
-//        if (existingItem != null) {
-//            val index = items.indexOf(existingItem)
-//            items[index] = newItem.copy(id = existingItem.id)
-//        } else {
-//            println("Item not found for id: $id")
-//        }
-//    }
+
 fun edit(itemId: String, newItem: Item) {
     val index = items.indexOfFirst { it.id == itemId }
     if (index != -1) {
