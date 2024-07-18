@@ -12,7 +12,7 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     interface ItemListener {
-        fun onItemClicked(id: String)
+        fun onItemClicked(id: Int)
         fun onItemLongClicked(index: Int)
     }
 
@@ -42,6 +42,8 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
                 .into(binding.itemImage)
         }
     }
+
+    fun itemAt(position: Int)=items[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

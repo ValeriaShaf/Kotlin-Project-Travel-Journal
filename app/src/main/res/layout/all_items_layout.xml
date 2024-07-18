@@ -39,35 +39,33 @@
 <!--            android:src="@drawable/icon1"-->
 <!--            android:layout_gravity="center|top"/>-->
 
-    <com.google.android.material.appbar.AppBarLayout
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:liftOnScroll="true">-->
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:liftOnScroll="true">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:title="My Travel Journal"
-            android:layout_gravity="center"
-            app:buttonGravity="center_vertical"
-            app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/menu_burger"
-            app:navigationIconTint="@color/white"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:backgroundTint="@color/lightBlue"
+        android:layout_height="70dp"
+        app:title="My Travel Journal"
+        android:gravity="center"
+        app:buttonGravity="center_vertical"
+        app:navigationIcon="@drawable/menu_burger"
+        app:navigationIconTint="@color/white"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:backgroundTint="@color/lightBlue"
+        />
 
 
-            />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
 <!--    Scroll List-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="100dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="80dp"
 
         />
 

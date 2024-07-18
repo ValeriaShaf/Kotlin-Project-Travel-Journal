@@ -1,5 +1,6 @@
 package com.example.kotlinfinalproject.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,9 +11,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.kotlinfinalproject.data.model.Item
-import com.example.kotlinfinalproject.data.model.ItemManager
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.databinding.AddItemLayoutBinding
 
@@ -20,6 +21,7 @@ class AddItemFragment: Fragment() {
 
     private var _binding: AddItemLayoutBinding?=null
     private val binding get() = _binding!!
+    private val viewModel:ItemsViewModel by activityViewModels()
 
     private var imageUri: Uri?=null
     val pickImageLauncher: ActivityResultLauncher<Array<String>> =
@@ -32,6 +34,7 @@ class AddItemFragment: Fragment() {
             }
         imageUri=it
         }
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,8 +50,8 @@ class AddItemFragment: Fragment() {
             binding.enterItemTitle.text.toString(),
             binding.enterItemDescription.text.toString(), imageUri.toString()
         )
-            ItemManager.add(item)
-
+           // ItemManager.add(item)
+        viewModel.addItem(item)
         findNavController().navigate(
             R.id.action_addItemFragment_to_allItemsFragment
         , bundleOf("item" to item)

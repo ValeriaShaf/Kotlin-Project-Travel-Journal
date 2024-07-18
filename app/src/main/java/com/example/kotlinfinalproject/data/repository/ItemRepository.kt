@@ -23,6 +23,10 @@ init {
     }
     fun getItem(id:Int)=itemDao?.getItem(id)
 
+    fun deleteAll(){
+        itemDao?.deleteAll()
+    }
+
 
 
 

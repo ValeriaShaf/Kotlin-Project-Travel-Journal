@@ -19,6 +19,9 @@ interface ItemDao {
     fun getItems(): LiveData<List<Item>>
     // TODO: instead of 'title' it should be 'content' but doesn't work
 
-    @Query ( "SELECT * FROM items WHERE id LIKE :id")
+    @Query ( "SELECT * FROM items WHERE id=:id")
     fun getItem(id: Int):Item
+
+    @Query ( "DELETE FROM items")
+    fun deleteAll()
 }
