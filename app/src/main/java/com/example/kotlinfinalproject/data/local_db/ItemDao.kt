@@ -9,7 +9,7 @@ import com.example.kotlinfinalproject.data.model.Item
 @Dao
 interface ItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addItem(item: Item)
+    suspend fun addItem(item: Item)
     @Delete
     fun deleteItem (vararg items: Item)
     @Update
@@ -20,8 +20,8 @@ interface ItemDao {
     // TODO: instead of 'title' it should be 'content' but doesn't work
 
     @Query ( "SELECT * FROM items WHERE id=:id")
-    fun getItem(id: Int):Item
+    suspend fun getItem(id: Int):Item
 
     @Query ( "DELETE FROM items")
-    fun deleteAll()
+    suspend fun deleteAll()
 }
