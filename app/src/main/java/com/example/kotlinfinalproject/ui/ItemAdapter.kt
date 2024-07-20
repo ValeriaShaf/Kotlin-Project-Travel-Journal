@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.ItemLayoutBinding
 
@@ -14,6 +15,7 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
     interface ItemListener {
         fun onItemClicked(index: Int)
         fun onItemLongClicked(id: Int )
+        fun onFavoriteClicked(item: Item)
     }
 
     inner class ItemViewHolder(private val binding: ItemLayoutBinding) :
@@ -22,6 +24,10 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
         init {
             binding.root.setOnClickListener(this)
             binding.root.setOnLongClickListener(this)
+            binding.favoriteBtn.setOnClickListener {
+                val item = items[adapterPosition]
+                listener.onFavoriteClicked(item) // Notify the click event
+            }
         }
 
         override fun onClick(v: View?){
@@ -41,6 +47,9 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
                 .load(item.photo)
                 .circleCrop()
                 .into(binding.itemImage)
+
+            val favoriteIcon = if (item.isFavorite) R.drawable.heart_filled else R.drawable.heart
+            binding.favoriteBtn.setImageResource(favoriteIcon)
         }
     }
 

@@ -18,11 +18,16 @@ data class Item(
     @ColumnInfo(name="image")
     val photo: String?,
     @ColumnInfo(name="date")
-    val date: String
+    val date: String,
+    var isFavorite: Boolean = false
 //    @ColumnInfo(name="location")
 //    val location: String
     //val id: String = UUID.randomUUID().toString()
 ):Parcelable{
+
+
+
+
     @IgnoredOnParcel
     @PrimaryKey(autoGenerate = true)
     var id:Int=0

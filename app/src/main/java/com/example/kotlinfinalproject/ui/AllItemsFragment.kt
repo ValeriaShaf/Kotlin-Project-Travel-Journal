@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinfinalproject.R
+import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.AllItemsLayoutBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
@@ -88,6 +89,8 @@ class AllItemsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.items?.observe(viewLifecycleOwner) { items ->
             binding.recycler.adapter = ItemAdapter(items, object : ItemAdapter.ItemListener {
+
+
                 override fun onItemLongClicked(id: Int) {
                     // Find the item by its ID
                     val item = items.find { it.id == id }
@@ -105,6 +108,14 @@ class AllItemsFragment : Fragment() {
                     // Set the item in the ViewModel and navigate to the detail fragment
                     viewModel.setItem(items[index])
                     findNavController().navigate(R.id.action_allItemsFragment_to_detailItemFragment)
+                }
+
+                override fun onFavoriteClicked(item: Item) {
+                    // Toggle favorite status
+                    item.isFavorite = !item.isFavorite
+                    // Update the item in your data source
+                    viewModel.updateItem(item) // Ensure you have this method in your ViewModel
+                    (binding.recycler.adapter as ItemAdapter).notifyDataSetChanged() // Refresh the adapter
                 }
             })
         }
