@@ -15,13 +15,12 @@ import kotlin.coroutines.CoroutineContext
 class MainActivity : AppCompatActivity(), CoroutineScope {
     lateinit var job : Job
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + Job()
+        get() = Dispatchers.Main
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        job = Job()
 
         setContentView(R.layout.activity_main)
 
@@ -31,13 +30,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             insets
         }
 
-
-//        val toolbar=findViewById<Toolbar>(R.id.toolbar)
-//        setSupportActionBar(toolbar)
     }
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
     }
 
 }

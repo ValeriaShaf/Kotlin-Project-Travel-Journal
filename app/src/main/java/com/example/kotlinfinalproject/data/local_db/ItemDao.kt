@@ -11,7 +11,7 @@ interface ItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addItem(item: Item)
     @Delete
-    fun deleteItem (vararg items: Item)
+    suspend fun deleteItem (vararg items: Item)
     @Update
     fun updateItem(item: Item)
 
