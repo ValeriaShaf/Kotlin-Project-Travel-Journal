@@ -1,11 +1,17 @@
 package com.example.kotlinfinalproject.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -82,7 +88,7 @@ class AllItemsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.items?.observe(viewLifecycleOwner) { items ->
             binding.recycler.adapter = ItemAdapter(items, object : ItemAdapter.ItemListener {
-                override fun onItemClicked(id: Int) {
+                override fun onItemLongClicked(id: Int) {
                     // Find the item by its ID
                     val item = items.find { it.id == id }
                     if (item != null) {
@@ -95,7 +101,7 @@ class AllItemsFragment : Fragment() {
                     }
                 }
 
-                override fun onItemLongClicked(index: Int) {
+                override fun onItemClicked(index: Int) {
                     // Set the item in the ViewModel and navigate to the detail fragment
                     viewModel.setItem(items[index])
                     findNavController().navigate(R.id.action_allItemsFragment_to_detailItemFragment)
@@ -108,12 +114,15 @@ class AllItemsFragment : Fragment() {
     binding.recycler.layoutManager = LinearLayoutManager(requireContext())
 
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            private val swipeBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
+            private val trashIcon = ContextCompat.getDrawable(requireContext(), R.drawable.delete)
+
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ) = makeFlag(
                 ItemTouchHelper.ACTION_STATE_SWIPE,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                ItemTouchHelper.LEFT
             )
 
             override fun onMove(
@@ -128,6 +137,41 @@ class AllItemsFragment : Fragment() {
                 val item = (binding.recycler.adapter as ItemAdapter).itemAt(viewHolder.adapterPosition)
                 viewModel.deleteItem(item)
                 (binding.recycler.adapter as ItemAdapter).notifyItemRemoved(viewHolder.adapterPosition)
+            }
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val borderSizePx = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics
+                ).toInt()
+
+
+                // Draw the red background
+                val background = RectF(itemView.left.toFloat()+borderSizePx, itemView.top.toFloat()+borderSizePx, itemView.right.toFloat(), itemView.bottom.toFloat()-borderSizePx)
+                val paint = Paint().apply {
+                    color = if (isCurrentlyActive) swipeBackgroundColor else Color.TRANSPARENT
+                }
+                c.drawRect(background, paint)
+
+                // Draw the trash icon
+                if (trashIcon != null) {
+                    val iconLeft = itemView.right - trashIcon.intrinsicWidth - 100
+                    val iconRight = itemView.right - 100
+                    val iconTop = itemView.top + (itemView.height - trashIcon.intrinsicHeight) / 2
+                    val iconBottom = iconTop + trashIcon.intrinsicHeight
+
+                    trashIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    trashIcon.draw(c)
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         }).attachToRecyclerView(binding.recycler)
 

@@ -17,6 +17,10 @@ data class Item(
     val description:String,
     @ColumnInfo(name="image")
     val photo: String?,
+    @ColumnInfo(name="date")
+    val date: String
+//    @ColumnInfo(name="location")
+//    val location: String
     //val id: String = UUID.randomUUID().toString()
 ):Parcelable{
     @IgnoredOnParcel
