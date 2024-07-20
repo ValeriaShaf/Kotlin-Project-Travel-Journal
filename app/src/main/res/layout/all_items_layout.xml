@@ -43,8 +43,7 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        app:liftOnScroll="true">-->
-
-    <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -56,6 +55,8 @@
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:backgroundTint="@color/lightBlue"
         />
+
+
 
 
     <!--    </com.google.android.material.appbar.AppBarLayout>-->
@@ -120,4 +121,13 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        app:menu="@menu/nav_menu"
+         />
 </androidx.drawerlayout.widget.DrawerLayout>

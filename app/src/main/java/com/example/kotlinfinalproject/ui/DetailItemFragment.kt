@@ -14,6 +14,7 @@ class DetailItemFragment : Fragment(){
     var _binding: DetailItemLayoutBinding?=null
     val binding get()=_binding!!
     val viewModel:ItemsViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

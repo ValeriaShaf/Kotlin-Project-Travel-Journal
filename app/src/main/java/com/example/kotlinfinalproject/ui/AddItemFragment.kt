@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.databinding.AddItemLayoutBinding
+import com.google.android.material.textfield.TextInputEditText
 
 class AddItemFragment: Fragment() {
 
@@ -26,13 +29,13 @@ class AddItemFragment: Fragment() {
     private var imageUri: Uri?=null
     val pickImageLauncher: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.OpenDocument()){
-        binding.imageBtn.setImageURI(it)
+            binding.imageBtn.setImageURI(it)
             if (it != null) {
                 requireActivity().contentResolver.takePersistableUriPermission(it,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             }
-        imageUri=it
+            imageUri=it
         }
     @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
@@ -43,18 +46,19 @@ class AddItemFragment: Fragment() {
         _binding= AddItemLayoutBinding.inflate(inflater, container, false)
 
         binding.finishBtn.setOnClickListener {
-           // val bundle= bundleOf("title" to binding.itemTitle.text.toString(), "description" to binding.itemDescription.text.toString())
+            // val bundle= bundleOf("title" to binding.itemTitle.text.toString(), "description" to binding.itemDescription.text.toString())
 
             //findNavController().navigate(R.id.action_addItemFragment_to_allItemsFragment,bundle)
-        val item= Item(
-            binding.enterItemTitle.text.toString(),
-            binding.enterItemDescription.text.toString(), imageUri.toString()
-        )
-           // ItemManager.add(item)
-        viewModel.addItem(item)
-        findNavController().navigate(
-            R.id.action_addItemFragment_to_allItemsFragment
-        , bundleOf("item" to item)
+            val item= Item(
+                binding.enterItemTitle.text.toString(),
+                binding.enterItemDescription.text.toString(),
+                imageUri.toString()
+            )
+            // ItemManager.add(item)
+            viewModel.addItem(item)
+            findNavController().navigate(
+                R.id.action_addItemFragment_to_allItemsFragment
+                , bundleOf("item" to item)
             )
 
         }
@@ -74,4 +78,7 @@ class AddItemFragment: Fragment() {
         super.onDestroyView()
         _binding=null
     }
+
+
+
 }

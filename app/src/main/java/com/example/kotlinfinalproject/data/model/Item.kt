@@ -18,11 +18,11 @@ data class Item(
     @ColumnInfo(name="image")
     val photo: String?,
     //val id: String = UUID.randomUUID().toString()
-    ):Parcelable{
-        @IgnoredOnParcel
-        @PrimaryKey(autoGenerate = true)
-        var id:Int=0
-    }
+):Parcelable{
+    @IgnoredOnParcel
+    @PrimaryKey(autoGenerate = true)
+    var id:Int=0
+}
 
 //object ItemManager{
 //    val items: MutableList<Item> = mutableListOf()

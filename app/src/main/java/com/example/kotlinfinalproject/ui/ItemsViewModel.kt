@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.data.repository.ItemRepository
@@ -26,7 +27,14 @@ class ItemsViewModel(application: Application): AndroidViewModel(application) {
             repository.addItem(item)}
 
     }
-
+    fun getItemById(id: Int): LiveData<Item> {
+        return liveData {
+            val item = repository.getItem(id)
+            if (item != null) {
+                emit(item)
+            }
+        }
+    }
     fun deleteItem(item: Item){
         viewModelScope.launch{
         repository.deleteItem(item)}
@@ -36,4 +44,10 @@ class ItemsViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch{
         repository.deleteAll()}
     }
+    fun updateItem(item: Item) {
+        viewModelScope.launch {
+            repository.updateItem(item)
+        }
+    }
+
 }

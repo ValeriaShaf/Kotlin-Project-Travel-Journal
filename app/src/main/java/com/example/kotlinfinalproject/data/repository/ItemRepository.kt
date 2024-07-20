@@ -28,6 +28,9 @@ init {
     suspend fun deleteAll(){
         itemDao?.deleteAll()
     }
+    suspend fun updateItem(item: Item) {
+        itemDao?.updateItem(item)
+    }
 
 
 

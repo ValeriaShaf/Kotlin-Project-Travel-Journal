@@ -13,7 +13,7 @@ interface ItemDao {
     @Delete
     suspend fun deleteItem (vararg items: Item)
     @Update
-    fun updateItem(item: Item)
+    suspend fun updateItem(item: Item)
 
     @Query ( "SELECT * FROM items ORDER BY title ASC")
     fun getItems(): LiveData<List<Item>>
@@ -24,4 +24,6 @@ interface ItemDao {
 
     @Query ( "DELETE FROM items")
     suspend fun deleteAll()
+
+
 }
