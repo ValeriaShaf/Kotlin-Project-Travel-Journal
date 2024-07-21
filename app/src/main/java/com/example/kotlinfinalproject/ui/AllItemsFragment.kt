@@ -8,7 +8,6 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.*
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -25,15 +24,18 @@ import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.AllItemsLayoutBinding
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class AllItemsFragment : Fragment() {
 
     private var _binding: AllItemsLayoutBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ItemsViewModel by activityViewModels()
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navView: NavigationView
+
+    private lateinit var bottomNavView: BottomNavigationView
+
+    private var isFavoritesTab = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,88 +43,48 @@ class AllItemsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = AllItemsLayoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUI()
+        setupRecyclerView()
+        setupObservers()
+    }
+
+    private fun setupUI() {
         binding.addItemBtn.setOnClickListener {
             findNavController().navigate(R.id.action_allItemsFragment_to_addItemFragment)
         }
 
-        drawerLayout = binding.root.findViewById(R.id.drawerLayout)
-        navView = binding.root.findViewById(R.id.nav_view)
 
-        // Set up the navigation icon click listener
-        val toolbar: MaterialToolbar = binding.root.findViewById(R.id.topAppBar)
-        toolbar.setNavigationOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
+        bottomNavView = binding.root.findViewById(R.id.bottomNavigation)
 
-        // Set up navigation view item selected listener
-        navView.setNavigationItemSelectedListener { menuItem ->
+
+
+
+
+        bottomNavView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_profile -> {
-                    Toast.makeText(requireContext(), "Profile clicked", Toast.LENGTH_SHORT).show()
+                R.id.bottom_home -> {
+                    isFavoritesTab = false
+                    loadAllItems()
                     true
                 }
-                R.id.nav_favorites -> {
-                    Toast.makeText(requireContext(), "Favorites clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                R.id.nav_Settings -> {
-                    Toast.makeText(requireContext(), "Settings clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                R.id.nav_share -> {
-                    Toast.makeText(requireContext(), "Share clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                R.id.nav_call -> {
-                    Toast.makeText(requireContext(), "Emergency Call clicked", Toast.LENGTH_SHORT).show()
+                R.id.favorites -> {
+                    isFavoritesTab = true
+                    loadFavorites()
                     true
                 }
                 else -> false
             }
         }
-
-        return binding.root
     }
 
-    @SuppressLint("SuspiciousIndentation")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.items?.observe(viewLifecycleOwner) { items ->
-            binding.recycler.adapter = ItemAdapter(items, object : ItemAdapter.ItemListener {
-
-
-                override fun onItemLongClicked(id: Int) {
-                    // Find the item by its ID
-                    val item = items.find { it.id == id }
-                    if (item != null) {
-                        // Set the item in the ViewModel
-                        viewModel.setItem(item)
-                        // Pass the item ID to EditItemFragment
-                        findNavController().navigate(R.id.action_allItemsFragment_to_editItemFragment,
-                            bundleOf("itemId" to id)
-                        )
-                    }
-                }
-
-                override fun onItemClicked(index: Int) {
-                    // Set the item in the ViewModel and navigate to the detail fragment
-                    viewModel.setItem(items[index])
-                    findNavController().navigate(R.id.action_allItemsFragment_to_detailItemFragment)
-                }
-
-                override fun onFavoriteClicked(item: Item) {
-                    // Toggle favorite status
-                    item.isFavorite = !item.isFavorite
-                    // Update the item in your data source
-                    viewModel.updateItem(item) // Ensure you have this method in your ViewModel
-                    (binding.recycler.adapter as ItemAdapter).notifyDataSetChanged() // Refresh the adapter
-                }
-            })
-        }
-
-
-
-    binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+    private fun setupRecyclerView() {
+//        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+//        binding.recycler.adapter = ItemAdapter(emptyList(), itemListener) // Initialize with empty list
 
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
             private val swipeBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
@@ -140,15 +102,14 @@ class AllItemsFragment : Fragment() {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+            ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = (binding.recycler.adapter as ItemAdapter).itemAt(viewHolder.adapterPosition)
                 viewModel.deleteItem(item)
-                (binding.recycler.adapter as ItemAdapter).notifyItemRemoved(viewHolder.adapterPosition)
             }
+
+
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -163,32 +124,102 @@ class AllItemsFragment : Fragment() {
                     TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics
                 ).toInt()
 
-
-                // Draw the red background
-                val background = RectF(itemView.left.toFloat()+borderSizePx, itemView.top.toFloat()+borderSizePx, itemView.right.toFloat(), itemView.bottom.toFloat()-borderSizePx)
+                val background = RectF(
+                    itemView.left.toFloat() + borderSizePx,
+                    itemView.top.toFloat() + borderSizePx,
+                    itemView.right.toFloat(),
+                    itemView.bottom.toFloat() - borderSizePx
+                )
                 val paint = Paint().apply {
                     color = if (isCurrentlyActive) swipeBackgroundColor else Color.TRANSPARENT
                 }
                 c.drawRect(background, paint)
 
-                // Draw the trash icon
-                if (trashIcon != null) {
-                    val iconLeft = itemView.right - trashIcon.intrinsicWidth - 100
+                trashIcon?.let {
+                    val iconLeft = itemView.right - it.intrinsicWidth - 100
                     val iconRight = itemView.right - 100
-                    val iconTop = itemView.top + (itemView.height - trashIcon.intrinsicHeight) / 2
-                    val iconBottom = iconTop + trashIcon.intrinsicHeight
-
-                    trashIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                    trashIcon.draw(c)
+                    val iconTop = itemView.top + (itemView.height - it.intrinsicHeight) / 2
+                    val iconBottom = iconTop + it.intrinsicHeight
+                    it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    it.draw(c)
                 }
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
         }).attachToRecyclerView(binding.recycler)
-
-        // Set up the toolbar
         setupToolbar()
     }
+
+    private fun setupObservers() {
+        viewModel.items?.observe(viewLifecycleOwner) { items ->
+            if (!isFavoritesTab) {
+                binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+                binding.recycler.adapter = ItemAdapter(items, itemListener)
+            }
+        }
+
+        viewModel.favoriteItems?.observe(viewLifecycleOwner) { favorites ->
+            if (isFavoritesTab) {
+                binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+                binding.recycler.adapter = ItemAdapter(favorites, itemListener)
+            }
+        }
+    }
+
+    private val itemListener = object : ItemAdapter.ItemListener {
+        override fun onItemLongClicked(id: Int) {
+            val item = (if (isFavoritesTab) viewModel.favoriteItems?.value else viewModel.items?.value)?.find { it.id == id }
+            item?.let {
+                viewModel.setItem(it)
+                findNavController().navigate(
+                    R.id.action_allItemsFragment_to_editItemFragment,
+                    bundleOf("itemId" to id)
+                )
+            }
+        }
+
+        override fun onItemClicked(index: Int) {
+            val item = (if (isFavoritesTab) viewModel.favoriteItems?.value else viewModel.items?.value)?.get(index)
+            item?.let {
+                viewModel.setItem(it)
+                findNavController().navigate(R.id.action_allItemsFragment_to_detailItemFragment)
+            }
+        }
+
+        override fun onFavoriteClicked(item: Item) {
+            viewModel.toggleFavorite(item)
+        }
+    }
+
+    private fun loadAllItems() {
+        viewModel.items?.observe(viewLifecycleOwner) { items ->
+            binding.recycler.adapter?.let { adapter ->
+                if (adapter is ItemAdapter) {
+                    adapter.updateItems(items)
+                }
+            }
+        }
+    }
+
+    private fun loadFavorites() {
+        viewModel.favoriteItems?.observe(viewLifecycleOwner) { favorites ->
+            binding.recycler.adapter?.let { adapter ->
+                if (adapter is ItemAdapter) {
+                    adapter.updateItems(favorites)
+                }
+            }
+        }
+    }
+
+
 
     private fun setupToolbar() {
         val toolbar: MaterialToolbar = binding.topAppBar
@@ -199,10 +230,6 @@ class AllItemsFragment : Fragment() {
                     showDeleteConfirmationDialog()
                     true
                 }
-                R.id.search -> {
-                    Toast.makeText(requireContext(), "Search clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
                 else -> false
             }
         }
@@ -210,19 +237,15 @@ class AllItemsFragment : Fragment() {
 
     private fun showDeleteConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirm Delete")
-            .setMessage("Are you sure you want to delete all items?")
-            .setPositiveButton("Yes") { _, _ ->
+        builder.setTitle(getString(R.string.confirm_delete))
+            .setMessage(getString(R.string.text_delete))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 viewModel.deleteAll()
-                Toast.makeText(requireContext(), "Items deleted", Toast.LENGTH_SHORT).show()
-                refreshItems()
+                Toast.makeText(requireContext(), getString(R.string.items_deleted), Toast.LENGTH_SHORT).show()
+                // No need to call refreshItems; the observer will handle it
             }
-            .setNegativeButton("No", null)
+            .setNegativeButton(getString(R.string.no), null)
             .show()
-    }
-
-    private fun refreshItems() {
-        (binding.recycler.adapter as ItemAdapter).notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

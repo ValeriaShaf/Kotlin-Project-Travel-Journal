@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import com.example.kotlinfinalproject.data.model.Item
 
-@Database(entities = [Item::class], version = 1, exportSchema = false) // Update version to 2
+@Database(entities = [Item::class], version = 4, exportSchema = false)
 abstract class ItemDataBase : RoomDatabase() {
 
     abstract fun itemsDao(): ItemDao
@@ -24,7 +24,7 @@ abstract class ItemDataBase : RoomDatabase() {
                     ItemDataBase::class.java,
                     "items_db"
                 )
-                    .addMigrations(Migrations.MIGRATION_1_2, Migrations.MIGRATION_2_3) // Add migration here
+                    .addMigrations(Migrations.MIGRATION_1_2, Migrations.MIGRATION_2_3, Migrations.MIGRATION_3_4) // Add migration here
                     .build()
                 instance = newInstance
                 newInstance

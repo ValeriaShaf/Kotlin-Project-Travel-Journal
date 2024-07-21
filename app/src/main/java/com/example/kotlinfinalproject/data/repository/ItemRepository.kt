@@ -1,40 +1,49 @@
 package com.example.kotlinfinalproject.data.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.example.kotlinfinalproject.data.local_db.ItemDao
 import com.example.kotlinfinalproject.data.local_db.ItemDataBase
 import com.example.kotlinfinalproject.data.model.Item
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.withContext
 
-class ItemRepository (application: Application) : CoroutineScope{
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
-    private var itemDao:ItemDao?
+class ItemRepository(application: Application) {
 
-init {
-    val db = ItemDataBase.getDataBase(application.applicationContext)
-    itemDao= db.itemsDao()
-}
-    fun getItems() = itemDao?.getItems()
+    private val itemDao: ItemDao = ItemDataBase.getDataBase(application).itemsDao()
 
-    suspend fun addItem(item: Item) =  itemDao?.addItem(item)
-    suspend fun deleteItem(item: Item) = itemDao?.deleteItem(item)
+    fun getItems(): LiveData<List<Item>> = itemDao.getItems()
 
-    suspend fun getItem(id:Int)=itemDao?.getItem(id)
+    fun getFavoriteItems(): LiveData<List<Item>> = itemDao.getFavoriteItems()
 
-    suspend fun deleteAll(){
-        itemDao?.deleteAll()
+    suspend fun addItem(item: Item) {
+        withContext(Dispatchers.IO) {
+            itemDao.addItem(item)
+        }
     }
+
+    suspend fun deleteItem(item: Item) {
+        withContext(Dispatchers.IO) {
+            itemDao.deleteItem(item)
+        }
+    }
+
+    suspend fun getItem(id: Int): Item? {
+        return withContext(Dispatchers.IO) {
+            itemDao.getItem(id)
+        }
+    }
+
+    suspend fun deleteAll() {
+        withContext(Dispatchers.IO) {
+            itemDao.deleteAll()
+        }
+    }
+
     suspend fun updateItem(item: Item) {
-        itemDao?.updateItem(item)
+        withContext(Dispatchers.IO) {
+            itemDao.updateItem(item)
+        }
     }
-
-
-
-
-
 
 }

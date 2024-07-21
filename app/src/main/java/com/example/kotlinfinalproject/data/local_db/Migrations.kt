@@ -15,4 +15,11 @@ object Migrations {
             database.execSQL("ALTER TABLE items ADD COLUMN isFavorite INTEGER DEFAULT 0")
         }
     }
+    val MIGRATION_3_4 = object : Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // Add the new column with a default value
+            database.execSQL("ALTER TABLE items ADD COLUMN location TEXT")
+        }
+    }
+
 }

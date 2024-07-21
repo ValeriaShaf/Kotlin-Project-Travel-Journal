@@ -106,7 +106,8 @@ class EditItemFragment : Fragment() {
                     title = binding.enterItemTitle.text.toString(),
                     description = binding.enterItemDescription.text.toString(),
                     photo = imageUri?.toString() ?: existingPhoto, // Use existing photo if no new image is selected
-                    "${binding.numberPickerDay.value}/${binding.numberPickerMonth.value}/${binding.numberPickerYear.value}"
+                    "${binding.numberPickerDay.value}/${binding.numberPickerMonth.value}/${binding.numberPickerYear.value}",
+                    binding.enterItemLocation.text.toString()
                 ).apply { id = itemId } // Set ID of the existing item
 
                 viewModel.updateItem(updatedItem)

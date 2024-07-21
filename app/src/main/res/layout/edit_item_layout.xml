@@ -12,7 +12,7 @@
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Edit Travel Point"
+    android:text="@string/edit_travel_point"
     android:gravity="center"
     android:textSize="20sp"/>
     <com.google.android.material.textfield.TextInputLayout
@@ -25,7 +25,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enter item title"
+            android:hint="@string/enter_item_title"
             android:id="@+id/enter_item_title"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -38,22 +38,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enter item location"
+            android:hint="@string/enter_item_location"
             android:id="@+id/enter_item_location"/>
     </com.google.android.material.textfield.TextInputLayout>
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"-->
-<!--        >-->
-
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="dd/mm/yyyy"-->
-<!--            android:id="@+id/enter_date"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,11 +53,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="@string/date"
             android:layout_gravity="start"
             android:textSize="15sp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
             android:textColor="#A8A3AA"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,14 +106,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:hint="enter item Description"
+            android:hint="@string/enter_item_description"
             android:id="@+id/enter_item_description"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Finish"
+        android:text="@string/finish"
         android:id="@+id/finish_btn"
         android:layout_gravity="center"
         android:backgroundTint="@color/darkBlue"

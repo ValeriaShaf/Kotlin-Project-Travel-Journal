@@ -32,7 +32,7 @@ class DetailItemFragment : Fragment(){
             //binding.itemImage.setImageURI(Uri.parse(it.photo.toString()))
             Glide.with(requireContext()).load(it.photo).circleCrop().into(binding.itemImage)
             binding.itemDate.text= it.date
-
+            binding.itemLocation.text=it.location
         }
 
 

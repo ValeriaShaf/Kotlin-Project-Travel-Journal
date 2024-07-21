@@ -14,7 +14,8 @@ class ItemsViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository = ItemRepository(application)
 
-    val items: LiveData<List<Item>>? = repository.getItems()
+    val items: LiveData<List<Item>> = repository.getItems()
+    val favoriteItems: LiveData<List<Item>> = repository.getFavoriteItems()
 
     private  val _chosenItem = MutableLiveData<Item>()
     val chosenItem: LiveData<Item> get() = _chosenItem
@@ -37,16 +38,24 @@ class ItemsViewModel(application: Application): AndroidViewModel(application) {
     }
     fun deleteItem(item: Item){
         viewModelScope.launch{
-        repository.deleteItem(item)}
+            repository.deleteItem(item)}
     }
 
     fun deleteAll(){
         viewModelScope.launch{
-        repository.deleteAll()}
+            repository.deleteAll()}
     }
     fun updateItem(item: Item) {
         viewModelScope.launch {
             repository.updateItem(item)
+        }
+    }
+    fun toggleFavorite(item: Item) {
+        viewModelScope.launch {
+
+            repository.updateItem(item)
+            // Refresh both lists to trigger observers
+
         }
     }
 

@@ -2,13 +2,16 @@ package com.example.kotlinfinalproject.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +28,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.databinding.AddItemLayoutBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.textfield.TextInputEditText
 
 class AddItemFragment: Fragment() {
@@ -32,11 +37,10 @@ class AddItemFragment: Fragment() {
     private var _binding: AddItemLayoutBinding?=null
     private val binding get() = _binding!!
     private val viewModel:ItemsViewModel by activityViewModels()
+    private lateinit var locationModel: LocationModel
 
     private lateinit var permissionRequest: ActivityResultLauncher<String>
-    private val locationViewModel:LocationViewModel by activityViewModels()
     private var imageUri: Uri?=null
-
     val pickImageLauncher: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.OpenDocument()){
             binding.imageBtn.setImageURI(it)
@@ -57,21 +61,29 @@ class AddItemFragment: Fragment() {
     ): View? {
         _binding= AddItemLayoutBinding.inflate(inflater, container, false)
         val toast = Toast.makeText(this.context, "Location Permission Denied", Toast.LENGTH_SHORT)
-
+        locationModel = LocationModel(this.requireContext())
         permissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()){
             if(it){
-                binding.locationBtn.setOnClickListener{ getLocation() }
+                binding.enterItemLocation.setText(locationModel.getLocation())
             }
             else{
                 binding.locationBtn.setOnClickListener {toast.show()}
             }
         }
-        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            binding.locationBtn.setOnClickListener{ getLocation() }
-        }
-        else{
-            permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        binding.locationBtn.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                binding.enterItemLocation.setText(locationModel.getLocation())
+            } else {
+                permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
 
         val calendar = Calendar.getInstance()
@@ -99,28 +111,8 @@ class AddItemFragment: Fragment() {
             binding.numberPickerDay.maxValue = getDaysInMonth(binding.numberPickerMonth.value, newVal)
         }
 
-
-
-
-//        binding.finishBtn.setOnClickListener {
-//            // val bundle= bundleOf("title" to binding.itemTitle.text.toString(), "description" to binding.itemDescription.text.toString())
-//
-//            //findNavController().navigate(R.id.action_addItemFragment_to_allItemsFragment,bundle)
-//            val item= Item(
-//                binding.enterItemTitle.text.toString(),
-//                binding.enterItemDescription.text.toString(),
-//                imageUri.toString()
-//            )
-//            // ItemManager.add(item)
-//            viewModel.addItem(item)
-//            findNavController().navigate(
-//                R.id.action_addItemFragment_to_allItemsFragment
-//                , bundleOf("item" to item)
-//            )
-//
-//        }
-
         binding.finishBtn.setOnClickListener {
+            if(binding.enterItemTitle.text!=null&&binding.enterItemDescription.text!=null&&binding.enterItemLocation.text!=null&&imageUri!=null){
             val day = binding.numberPickerDay.value
             val month = binding.numberPickerMonth.value
             val year = binding.numberPickerYear.value
@@ -131,13 +123,18 @@ class AddItemFragment: Fragment() {
                 binding.enterItemTitle.text.toString(),
                 binding.enterItemDescription.text.toString(),
                 imageUri.toString(),
-                selectedDate
+                selectedDate,
+                binding.enterItemLocation.text.toString()
             )
             viewModel.addItem(item)
             findNavController().navigate(
                 R.id.action_addItemFragment_to_allItemsFragment,
                 bundleOf("item" to item)
-            )
+            )}
+            else {
+                Toast.makeText(context, getString(R.string.enter_all_parameters), Toast.LENGTH_SHORT).show()
+            }
+
         }
 
 
@@ -169,7 +166,5 @@ class AddItemFragment: Fragment() {
     private fun isLeapYear(year: Int): Boolean {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
     }
-    private fun getLocation(){
-            binding.enterItemLocation.setText(locationViewModel.location.value.toString())
-    }
+
 }

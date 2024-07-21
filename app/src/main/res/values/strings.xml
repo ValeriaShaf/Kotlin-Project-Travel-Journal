@@ -1,5 +1,34 @@
 <resources>
-    <string name="app_name">KotlinFinalProject</string>
+    <string name="app_name">Travel Journal</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="add_travel_point">Add Travel Point</string>
+    <string name="enter_item_title">enter title</string>
+    <string name="enter_item_location">enter location</string>
+    <string name="set_current_location">Set current location</string>
+    <string name="date">Date</string>
+    <string name="enter_item_description">enter item description</string>
+    <string name="add">Add</string>
+    <string name="my_travel_journal">My Travel Journal</string>
+    <string name="title">Title</string>
+    <string name="location">Location</string>
+    <string name="dd_mm_yyyy" translatable="false">dd/mm/yyyy</string>
+    <string name="description">Description</string>
+    <string name="edit_travel_point">Edit Travel Point</string>
+    <string name="finish">Finish</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="delete">delete</string>
+    <string name="enter_all_parameters">Enter all parameters</string>
+    <string name="location_denied">Location Permission Denied</string>
+    <string name="items_deleted">Items deleted</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="text_delete">Are you sure you want to delete all items?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+<!--    <string name=""></string>-->
+
+
+
+
 </resources>

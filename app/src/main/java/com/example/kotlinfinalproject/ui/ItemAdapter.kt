@@ -1,43 +1,48 @@
 package com.example.kotlinfinalproject.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.ItemLayoutBinding
 
-class ItemAdapter(private val items: List<Item>, private val listener: ItemListener) :
-    RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(
+    private var items: List<Item>,
+    private val listener: ItemListener
+) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     interface ItemListener {
+        fun onItemLongClicked(id: Int)
         fun onItemClicked(index: Int)
-        fun onItemLongClicked(id: Int )
         fun onFavoriteClicked(item: Item)
     }
 
     inner class ItemViewHolder(private val binding: ItemLayoutBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener(this)
-            binding.root.setOnLongClickListener(this)
+            binding.root.setOnClickListener {
+                listener.onItemClicked(adapterPosition)
+            }
+
+            binding.root.setOnLongClickListener {
+                listener.onItemLongClicked(items[adapterPosition].id)
+                true
+            }
+
             binding.favoriteBtn.setOnClickListener {
                 val item = items[adapterPosition]
-                listener.onFavoriteClicked(item) // Notify the click event
+                item.isFavorite = !item.isFavorite
+                // Notify listener to update the favorite status in the ViewModel and database
+                listener.onFavoriteClicked(item)
+                // Update the favorite icon
+                updateFavoriteIcon(item.isFavorite)
             }
-        }
-
-        override fun onClick(v: View?){
-            listener.onItemClicked(adapterPosition)
-
-        }
-
-        override fun onLongClick(v: View?): Boolean {
-            listener.onItemLongClicked(items[adapterPosition].id)
-            return true
         }
 
         fun bind(item: Item) {
@@ -48,12 +53,15 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
                 .circleCrop()
                 .into(binding.itemImage)
 
-            val favoriteIcon = if (item.isFavorite) R.drawable.heart_filled else R.drawable.heart
+            binding.itemLocation.text = item.location
+            updateFavoriteIcon(item.isFavorite)
+        }
+
+        private fun updateFavoriteIcon(isFavorite: Boolean) {
+            val favoriteIcon = if (isFavorite) R.drawable.heart_filled else R.drawable.heart
             binding.favoriteBtn.setImageResource(favoriteIcon)
         }
     }
-
-    fun itemAt(position: Int)=items[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -64,7 +72,13 @@ class ItemAdapter(private val items: List<Item>, private val listener: ItemListe
         holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun getItemCount(): Int = items.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateItems(newItems: List<Item>) {
+        items = newItems
+        notifyDataSetChanged()
     }
+
+    fun itemAt(position: Int) = items[position]
 }

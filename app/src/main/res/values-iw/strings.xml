@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">יומן טיולים</string>
+    <string name="add_travel_point">הוסף טיול</string>
+    <string name="enter_item_title">כותרת</string>
+    <string name="enter_item_location">מיקום</string>
+    <string name="set_current_location">מצא מיקום נוכחי</string>
+    <string name="date">תאריך</string>
+    <string name="enter_item_description">תיאור</string>
+    <string name="add">הוסף</string>
+    <string name="my_travel_journal">יומן הטיולים שלי</string>
+    <string name="title">כותרת</string>
+    <string name="location">מיקום</string>
+    <string name="description">תיאור</string>
+    <string name="edit_travel_point">ערוך טיול</string>
+    <string name="finish">סיים</string>
+    <string name="home">בית</string>
+    <string name="favorites">מועדפים</string>
+    <string name="delete">מחק</string>
+    <string name="enter_all_parameters">הכנס את כל הערכים</string>
+    <string name="location_denied">שירותי מיקום נדחו</string>
+    <string name="items_deleted">פריטים נמחקו</string>
+    <string name="confirm_delete">אשר מחיקה</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="text_delete">האם אתה בטוח שברצונך למחוק את כל הפריטים?</string>
+</resources>
