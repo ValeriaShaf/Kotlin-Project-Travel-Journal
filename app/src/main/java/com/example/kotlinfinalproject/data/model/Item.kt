@@ -15,6 +15,8 @@ data class Item(
     val title:String,
     @ColumnInfo(name="description")
     val description:String,
+//    @ColumnInfo(name="location")
+//    val location :String,
     @ColumnInfo(name="image")
     val photo: String?,
     //val id: String = UUID.randomUUID().toString()
