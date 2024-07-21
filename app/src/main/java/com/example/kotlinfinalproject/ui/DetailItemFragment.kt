@@ -14,6 +14,7 @@ class DetailItemFragment : Fragment(){
     var _binding: DetailItemLayoutBinding?=null
     val binding get()=_binding!!
     val viewModel:ItemsViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,17 +31,11 @@ class DetailItemFragment : Fragment(){
             binding.itemDescription.text=it.description
             //binding.itemImage.setImageURI(Uri.parse(it.photo.toString()))
             Glide.with(requireContext()).load(it.photo).circleCrop().into(binding.itemImage)
-
+            binding.itemDate.text= it.date
 
         }
 
-    //        arguments?.getInt("item")?.let {
-//            val item= ItemManager.items[it]
-//            binding.itemTitle.text=item.title
-//            binding.itemDescription.text=item.description
-//            //binding.itemImage.setImageURI(Uri.parse(item.photo.toString()))
-//            Glide.with(requireContext()).load(item.photo).circleCrop().into(binding.itemImage)
-//        }
+
     }
 
     override fun onDestroyView() {
