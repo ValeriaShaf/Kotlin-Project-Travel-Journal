@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.EditItemLayoutBinding
@@ -72,6 +71,7 @@ class EditItemFragment : Fragment() {
                 if (item != null) {
                     binding.enterItemTitle.setText(item.title)
                     binding.enterItemDescription.setText(item.description)
+                    binding.enterItemLocation.setText(item.location)
                     existingPhoto = item.photo
                     binding.imageBtn.setImageURI(Uri.parse(item.photo))
 

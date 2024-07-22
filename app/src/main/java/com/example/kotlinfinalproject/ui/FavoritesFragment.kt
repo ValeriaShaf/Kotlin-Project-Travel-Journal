@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinfinalproject.R
 import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.FragmentFavoritesBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class FavoritesFragment : Fragment() {
 

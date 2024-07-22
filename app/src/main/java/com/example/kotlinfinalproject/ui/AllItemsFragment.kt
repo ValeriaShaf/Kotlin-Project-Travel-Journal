@@ -1,6 +1,6 @@
 package com.example.kotlinfinalproject.ui
 
-import android.annotation.SuppressLint
+
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,8 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -83,8 +81,7 @@ class AllItemsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-//        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
-//        binding.recycler.adapter = ItemAdapter(emptyList(), itemListener) // Initialize with empty list
+
 
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
             private val swipeBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)

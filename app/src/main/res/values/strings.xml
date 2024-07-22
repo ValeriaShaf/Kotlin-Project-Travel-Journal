@@ -20,7 +20,7 @@
     <string name="favorites">Favorites</string>
     <string name="delete">delete</string>
     <string name="enter_all_parameters">Enter all parameters</string>
-    <string name="location_denied">Location Permission Denied</string>
+    <string name="permission_denied">Permission Denied</string>
     <string name="items_deleted">Items deleted</string>
     <string name="confirm_delete">Confirm Delete</string>
     <string name="text_delete">Are you sure you want to delete all items?</string>

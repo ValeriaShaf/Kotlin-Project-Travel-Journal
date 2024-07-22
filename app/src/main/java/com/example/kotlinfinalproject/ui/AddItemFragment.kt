@@ -2,18 +2,11 @@ package com.example.kotlinfinalproject.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Application
-import android.app.usage.ExternalStorageStats
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,18 +18,14 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.R
+import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.AddItemLayoutBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
 import java.io.File
-import java.net.URI
 
 class AddItemFragment: Fragment() {
 
@@ -45,23 +34,11 @@ class AddItemFragment: Fragment() {
     private val viewModel:ItemsViewModel by activityViewModels()
     private lateinit var locationModel: LocationModel
     private lateinit var file: File
-    private lateinit var cameraImgLauncher: ActivityResultLauncher<Uri>
-
-    private lateinit var locationPermissionRequest: ActivityResultLauncher<String>
+    private lateinit var cameraImgLauncher: ActivityResultLauncher<Uri?>
+    private lateinit var permissionDeniedToast : Toast
+    private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
     private lateinit var cameraPermissionRequest: ActivityResultLauncher<String>
-    lateinit private var imageUri: Uri
-//    val pickImageLauncher: ActivityResultLauncher<Array<String>> =
-//        registerForActivityResult(ActivityResultContracts.OpenDocument()){
-//            binding.imageBtn.setImageURI(it)
-//            if (it != null) {
-//                requireActivity().contentResolver.takePersistableUriPermission(it,
-//                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                )
-//            }
-//            imageUri=it
-//        }
-
-
+    private var imageUri: Uri? = null
     @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,19 +46,25 @@ class AddItemFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding= AddItemLayoutBinding.inflate(inflater, container, false)
-        val permissionDeniedToast = Toast.makeText(this.context, "Permission Denied", Toast.LENGTH_SHORT)
         cameraImgLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()){
             if(it){
                 Glide.with(this.requireContext()).load(file).into(binding.imageBtn)
             }
         }
+        permissionDeniedToast = Toast.makeText(this.context, "${R.string.permission_denied}", Toast.LENGTH_SHORT)
         locationModel = LocationModel(this.requireContext())
-        locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-            if(it){
-                binding.enterItemLocation.setText(locationModel.getLocation())
-            }
-            else{
-                binding.locationBtn.setOnClickListener {permissionDeniedToast.show()}
+        locationPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                        permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true -> {
+                    // Permissions granted, get location
+                    getAndSetLocation()
+                }
+
+                else -> {
+                    // Permissions denied
+                    binding.locationBtn.setOnClickListener { permissionDeniedToast.show() }
+                }
             }
         }
         cameraPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()){
@@ -96,17 +79,20 @@ class AddItemFragment: Fragment() {
         }
         binding.locationBtn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
-                    this.requireContext(),
+                    requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
-                    this.requireContext(),
+                ) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                binding.enterItemLocation.setText(locationModel.getLocation())
+                getAndSetLocation()
             } else {
-                locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                locationPermissionRequest.launch(arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ))
             }
         }
         binding.imageBtn.setOnClickListener{
@@ -171,10 +157,6 @@ class AddItemFragment: Fragment() {
 
         }
 
-
-//        binding.imageBtn.setOnClickListener {
-//            pickImageLauncher.launch(arrayOf("image/*"))
-//        }
         return binding.root
     }
 
@@ -199,6 +181,17 @@ class AddItemFragment: Fragment() {
 
     private fun isLeapYear(year: Int): Boolean {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+    }
+    private fun getAndSetLocation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val location = locationModel.getLocation()
+                binding.enterItemLocation.setText(location)
+            } catch (e: Exception) {
+                // Handle any errors
+                permissionDeniedToast.show()
+            }
+        }
     }
 
 }
