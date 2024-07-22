@@ -28,7 +28,6 @@ class LocationModel(private var context: Context) {
             lat = result.lastLocation!!.latitude
             long = result.lastLocation!!.longitude
             locationUpdated = true
-            Log.d("Location", "$lat,$long")
         }
     }
 
@@ -36,12 +35,10 @@ class LocationModel(private var context: Context) {
         requestLocationUpdates()
     }
 
-    @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
         locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
     }
 
-    @SuppressLint("MissingPermission")
     fun getLocation(): String {
         if (!locationUpdated) {
             // If location hasn't been updated yet, try to get last known location
