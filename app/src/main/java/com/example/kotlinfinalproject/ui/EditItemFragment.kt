@@ -74,6 +74,7 @@ class EditItemFragment : Fragment() {
                     binding.enterItemLocation.setText(item.location)
                     existingPhoto = item.photo
                     binding.imageBtn.setImageURI(Uri.parse(item.photo))
+                    binding.enterItemLocation.setText(item.location)
 
                     existingDate = item.date
                     val day = getDayFromDate(item.date)
