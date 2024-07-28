@@ -23,6 +23,7 @@ import com.example.kotlinfinalproject.data.model.Item
 import com.example.kotlinfinalproject.databinding.AllItemsLayoutBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.math.abs
 
 
 class AllItemsFragment : Fragment() {
@@ -81,11 +82,10 @@ class AllItemsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-
-
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
             private val swipeBackgroundColor = ContextCompat.getColor(requireContext(), R.color.red)
             private val trashIcon = ContextCompat.getDrawable(requireContext(), R.drawable.delete)
+            private var currentDx = 0f
 
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
@@ -102,8 +102,15 @@ class AllItemsFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = (binding.recycler.adapter as ItemAdapter).itemAt(viewHolder.adapterPosition)
-                viewModel.deleteItem(item)
+                val itemView = viewHolder.itemView
+                val recyclerViewWidth = binding.recycler.width
+                if (abs(currentDx) > recyclerViewWidth / 2) {
+                    val item = (binding.recycler.adapter as ItemAdapter).itemAt(viewHolder.adapterPosition)
+                    viewModel.deleteItem(item)
+                } else {
+                    // Reset the item if it was not swiped far enough
+                    binding.recycler.adapter?.notifyItemChanged(viewHolder.adapterPosition)
+                }
             }
 
 
@@ -116,6 +123,9 @@ class AllItemsFragment : Fragment() {
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
+
+                currentDx = dX
+
                 val itemView = viewHolder.itemView
                 val borderSizePx = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics

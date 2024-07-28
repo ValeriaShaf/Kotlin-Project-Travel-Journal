@@ -16,7 +16,7 @@ interface ItemDao {
     suspend fun updateItem(item: Item)
 
     @Query ( "SELECT * FROM items ORDER BY id ASC")
-    fun getItems(): LiveData<List<Item>>
+     fun getItems(): LiveData<List<Item>>
 
     @Query ( "SELECT * FROM items WHERE id=:id")
     suspend fun getItem(id: Int):Item
@@ -25,7 +25,7 @@ interface ItemDao {
     @Query ( "DELETE FROM items")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM items WHERE isFavorite = 1")
-    fun getFavoriteItems(): LiveData<List<Item>>
+    @Query("SELECT * FROM items WHERE isFavorite = 1 ORDER BY id ASC")
+     fun getFavoriteItems(): LiveData<List<Item>>
 
 }
