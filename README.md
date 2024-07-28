@@ -6,7 +6,7 @@ This project is a comprehensive Android application developed as part of a final
 
 ## Demo
 
-![Demo](path/to/screen-recorder.gif)
+![Demo](screen-recorder.gif)
 
 ## Features
 
