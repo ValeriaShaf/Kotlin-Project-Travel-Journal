@@ -6,7 +6,7 @@ This project is a comprehensive Android application developed as part of a final
 
 ## Demo
 
-<img src="screen-recorder.gif" width="400" alt="Demo">
+<img src="screen-recorder.gif" width="200" alt="Demo">
 
 ## Features
 
